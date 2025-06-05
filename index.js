@@ -7,7 +7,11 @@ const port = 8000;
 
 // imports de rotas
 const categoriaRoutes = require("./src/routes/categoriaRoutes");
+const leadRoutes = require("./src/routes/leadRoutes");
+const unidadeRoutes = require("./src/routes/unidadeRoutes");
 
+// middleware que permite requisições de outros dominios
+app.use(cors());
 // middleware que traduz o json pra javascript
 app.use(express.json());
 
@@ -18,6 +22,8 @@ app.get("/", (req, res) => {
 
 // rotas das entidades
 app.use("/categorias", categoriaRoutes);
+app.use("/leads",leadRoutes);
+app.use("/unidades",unidadeRoutes);
 
 
 // rota not found

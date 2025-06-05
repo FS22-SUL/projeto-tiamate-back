@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model banners {
+  banner_id     Int    @id @unique(map: "banner_id") @default(autoincrement())
+  banner_nome   String @db.VarChar(50)
+  banner_imagem String @db.VarChar(255)
+  banner_link   String @db.VarChar(255)
+}
+
+model categorias {
+  categoria_id   Int        @id @unique(map: "categoria_id") @default(autoincrement())
+  categoria_nome String     @db.VarChar(30)
+  produtos       produtos[]
+}
+
+model depoimentos {
+  depoimento_id        Int    @id @unique(map: "depoimento_id") @default(autoincrement())
+  depoimento_nome      String @db.VarChar(50)
+  depoimento_imagem    String @db.VarChar(255)
+  depoimento_nota      Int
+  depoimento_descricao String @db.Text
+}
+
+model leads {
+  lead_id       Int    @id @unique(map: "lead_id") @default(autoincrement())
+  lead_nome     String @db.VarChar(50)
+  lead_email    String @db.VarChar(50)
+  lead_telefone String @db.VarChar(20)
+  lead_cidade   String @db.VarChar(50)
+  lead_estado   String @db.VarChar(5)
+  lead_midia    String @db.VarChar(20)
+}
+
+model noticias {
+  noticia_id        Int    @id @unique(map: "noticia_id") @default(autoincrement())
+  noticia_titulo    String @db.VarChar(100)
+  noticia_imagem    String @db.VarChar(255)
+  noticia_link      String @db.VarChar(255)
+  noticia_descricao String @db.Text
+}
+
+model pictures {
+  picture_id     Int    @id @unique(map: "picture_id") @default(autoincrement())
+  picture_nome   String @db.VarChar(50)
+  picture_imagem String @db.VarChar(255)
+}
+
+model produtos {
+  produto_id        Int        @id @unique(map: "produto_id") @default(autoincrement())
+  produto_nome      String     @db.VarChar(50)
+  produto_imagem    String     @db.VarChar(255)
+  produto_preco     Float      @db.Float
+  produto_descricao String     @db.TinyText
+  categoria_id      Int
+  categorias        categorias @relation(fields: [categoria_id], references: [categoria_id], onUpdate: Restrict, map: "produtos_fk5")
+
+  @@index([categoria_id], map: "produtos_fk5")
+}
+
+model unidades {
+  unidade_id             Int    @id @unique(map: "unidade_id") @default(autoincrement())
+  unidade_endereco       String @db.VarChar(50)
+  unidade_cidade         String @db.VarChar(50)
+  unidade_estado         String @db.VarChar(5)
+  unidade_cep            String @db.VarChar(10)
+  unidade_horario_semana String @db.VarChar(50)
+  unidade_horario_fds    String @db.VarChar(50)
+  unidade_maps           String @db.VarChar(255)
+}
+
+model usuarios {
+  usuario_id    Int    @id @unique(map: "usuario_id") @default(autoincrement())
+  usuario_nome  String @db.VarChar(50)
+  usuario_email String @db.VarChar(50)
+  usuario_senha String @db.VarChar(50)
+}

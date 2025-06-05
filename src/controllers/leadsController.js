@@ -2,22 +2,22 @@ const { executeSQL, prisma } = require("../utils");
 
 async function buscarTodos() {
     try {
-        return await prisma.categorias.findMany();
+        return await prisma.leads.findMany();
     } catch (error) {
         return {
             type: "error",
             description: error.message
         }
     }
-    //     return await executeSQL("SELECT * FROM categorias;");
+    //     return await executeSQL("SELECT * FROM leads;");
 
 }
 
 async function buscarUm(id) {
     try {
-        return await prisma.categorias.findFirst({
+        return await prisma.leads.findFirst({
             where: {
-                categoria_id: Number(id)
+                lead_id: Number(id)
             }
         })
     } catch (error) {
@@ -26,13 +26,13 @@ async function buscarUm(id) {
             description: error.message
         }
     }
-    // return await executeSQL(`SELECT * FROM categorias WHERE categoria_id = ${id};`);
+    // return await executeSQL(`SELECT * FROM leads WHERE lead_id = ${id};`);
 
 }
 
 async function criar(dados) {
     try {
-        return await prisma.categorias.create({
+        return await prisma.leads.create({
             data: dados
         })
     } catch (error) {
@@ -41,16 +41,16 @@ async function criar(dados) {
             description: error.message
         }
     }
-    // return await executeSQL(`INSERT INTO categorias (categoria_nome) VALUES ("${dados.categoria_nome}");`);
+    // return await executeSQL(`INSERT INTO leads (categoria_nome) VALUES ("${dados.categoria_nome}");`);
 
 }
 
 async function editar(id, dados) {
     try {
-        return await prisma.categorias.update({
+        return await prisma.leads.update({
             data: dados,
             where: {
-                categoria_id: Number(id)
+                lead_id: Number(id)
             }
         })
     } catch (error) {
@@ -59,15 +59,15 @@ async function editar(id, dados) {
             description: error.message
         }
     }
-    // return await executeSQL(`UPDATE categorias SET categoria_nome = "${dados.categoria_nome}" WHERE categoria_id = ${id};`);
+    // return await executeSQL(`UPDATE leads SET categoria_nome = "${dados.categoria_nome}" WHERE lead_id = ${id};`);
 
 }
 
 async function deletar(id) {
     try {
-        return await prisma.categorias.delete({
+        return await prisma.leads.delete({
             where: {
-                categoria_id: Number(id)
+                lead_id: Number(id)
             }
         })
     } catch (error) {
@@ -76,7 +76,7 @@ async function deletar(id) {
             description: error.message
         }
     }
-    // return await executeSQL(`DELETE FROM categorias WHERE categoria_id = ${id};`);
+    // return await executeSQL(`DELETE FROM leads WHERE lead_id = ${id};`);
 
 }
 
