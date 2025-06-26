@@ -9,6 +9,8 @@ const port = 8000;
 const categoriaRoutes = require("./src/routes/categoriaRoutes");
 const leadRoutes = require("./src/routes/leadRoutes");
 const unidadeRoutes = require("./src/routes/unidadeRoutes");
+const usuarioRoutes = require("./src/routes/usuarioRoutes");
+
 
 // middleware que permite requisições de outros dominios
 app.use(cors());
@@ -24,7 +26,7 @@ app.get("/", (req, res) => {
 app.use("/categorias", categoriaRoutes);
 app.use("/leads",leadRoutes);
 app.use("/unidades",unidadeRoutes);
-
+app.use("/usuarios", usuarioRoutes); 
 
 // rota not found
 app.use((req, res) => {
