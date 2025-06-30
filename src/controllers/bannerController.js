@@ -1,4 +1,4 @@
-const { prisma } = require("../utils");
+const { prisma } = require("../utils");//produtos
 const { formidable } = require("formidable");
 const { promisify } = require("util");
 const path = require("path");

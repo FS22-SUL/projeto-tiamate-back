@@ -11,6 +11,7 @@ const leadRoutes = require("./src/routes/leadRoutes");
 const unidadeRoutes = require("./src/routes/unidadeRoutes");
 const usuarioRoutes = require("./src/routes/usuarioRoutes");
 const bannerRoutes = require("./src/routes/bannerRoutes");
+const produtoRoutes = require("./src/routes/produtoRoutes");
 
 
 // middleware que permite requisições de outros dominios
@@ -25,7 +26,9 @@ app.get("/", (req, res) => {
 
 // rotas das entidades
 app.use("/banners", bannerRoutes);
+app.use("/produtos", produtoRoutes);
 app.use('/uploads/banners', express.static('./src/uploads/banners'));
+app.use('/uploads/produtos', express.static('./src/uploads/produtos'));
 app.use("/categorias", categoriaRoutes);
 app.use("/leads",leadRoutes);
 app.use("/unidades",unidadeRoutes);
