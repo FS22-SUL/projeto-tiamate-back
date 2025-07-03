@@ -13,6 +13,7 @@ const usuarioRoutes = require("./src/routes/usuarioRoutes");
 const bannerRoutes = require("./src/routes/bannerRoutes");
 const produtoRoutes = require("./src/routes/produtoRoutes");
 const picturesRoutes = require("./src/routes/picturesRoutes");
+const { login } = require("./src/controllers/usuarioController");
 
 
 // middleware que permite requisições de outros dominios
@@ -25,7 +26,12 @@ app.get("/", (req, res) => {
     res.send("Hello World!");
 });
 
+app.post("/login", async (req, res) => {
+    res.send(await login(req.body));
+})
+
 // rotas das entidades
+
 app.use("/banners", bannerRoutes);
 app.use("/produtos", produtoRoutes);
 app.use('/uploads/banners', express.static('./src/uploads/banners'));

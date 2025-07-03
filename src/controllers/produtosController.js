@@ -23,7 +23,7 @@ async function buscarUm(id) {
     try {
         return await prisma.produtos.findFirst({
             where: {
-               produto_id: Number(id)
+                produto_id: Number(id)
             }
         })
     } catch (error) {
@@ -32,7 +32,7 @@ async function buscarUm(id) {
             description: error.message
         }
     }
-    
+
 
 }
 
@@ -48,7 +48,7 @@ async function criar(req) {
                         description: error.message
                     });
                 }
-               
+
 
 
                 if (!files.produto_imagem || !files.produto_imagem[0]) {
@@ -77,7 +77,7 @@ async function criar(req) {
                 await copyFileAsync(oldpath, newpath);
                 await unlinkAsync(oldpath);
 
-                
+
 
                 await prisma.produtos.create({
                     data: {

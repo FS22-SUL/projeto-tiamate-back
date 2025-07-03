@@ -1,5 +1,8 @@
 
 const { prisma } = require("../utils"); // Supondo que o prisma client esteja em ../utils
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const saltRounds = 10;
 
 /**
  * Busca todos os usuários no banco de dados.
@@ -42,6 +45,8 @@ async function criar(dados) {
     try {
         // IMPORTANTE: Em um projeto real, a senha deve ser criptografada aqui
         // antes de ser salva no banco de dados.
+        // criptografa a senha que chegou da requisição
+        dados.usuario_senha = await bcrypt.hash(dados.usuario_senha, saltRounds);
         return await prisma.usuarios.create({
             data: dados
         })
@@ -60,6 +65,7 @@ async function criar(dados) {
  */
 async function editar(id, dados) {
     try {
+        dados.usuario_senha = await bcrypt.hash(dados.usuario_senha, saltRounds);
         return await prisma.usuarios.update({
             data: dados,
             where: {
@@ -93,10 +99,46 @@ async function deletar(id) {
     }
 }
 
+async function login(dados) {
+    try {
+        const usuario = await prisma.usuarios.findFirst({
+            where: {
+                usuario_email: dados.usuario_email
+            },
+        });
+
+        if (usuario) {
+            const senhaEValida = await bcrypt.compare(dados.usuario_senha, usuario.usuario_senha)
+            if (senhaEValida) {
+                const token = jwt.sign({ id: usuario.usuario_id }, process.env.SEGREDO);
+                return {
+                    token,
+                    usuario: {
+                        usuario_nome: usuario.usuario_nome,
+                        usuario_email: usuario.usuario_email,
+                    }
+                };
+            }
+        }
+
+        return {
+            type: "warning",
+            description: "usuário ou senha incorreto"
+        }
+
+    } catch (error) {
+        return {
+            type: "error",
+            description: error.message
+        }
+    }
+}
+
 module.exports = {
     buscarTodos,
     buscarUm,
     criar,
     editar,
-    deletar
+    deletar,
+    login
 }
