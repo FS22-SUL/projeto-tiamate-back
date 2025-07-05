@@ -6,7 +6,7 @@ const { rotaProtegida } = require("../utils");
 const router = require("express").Router();
 
 // Rota para listar todos os usuários
-router.get("/", rotaProtegida, async (req, res) => {
+router.get("/", async (req, res) => {
     res.send(await buscarTodos());
 });
 
