@@ -1,8 +1,14 @@
-const { executeSQL, prisma } = require("../utils");
+const { prisma } = require("../utils");//produtos
+const { formidable } = require("formidable");
+const { promisify } = require("util");
+const path = require("path");
+const fs = require("fs");
+const copyFileAsync = promisify(fs.copyFile);
+const unlinkAsync = promisify(fs.unlink);
+
 
 async function buscarTodos() {
     try {
-        // return await executeSQL("SELECT * FROM pictures;");
         return await prisma.pictures.findMany();
     } catch (error) {
         return {
@@ -13,77 +19,66 @@ async function buscarTodos() {
 
 }
 
-async function buscarUm(id) {
+async function criar(req) {
     try {
-        return await prisma.pictures.findFirst({
-            where: {
-                lead_id: Number(id)
-            }
+        const form = formidable({});
+
+        const resultado = new Promise((resolve, reject) => {
+            form.parse(req, async (error, fields, files) => {
+                if (error) {
+                    resolve({
+                        type: "error",
+                        description: error.message
+                    });
+                }
+
+                if (!files.picture_imagem) {
+                    resolve({
+                        type: "warning",
+                        description: 'O arquivo é obrigatório'
+                    });
+                }
+
+                const filenameOriginal = files.picture_imagem[0].originalFilename;
+
+                if (!filenameOriginal.includes("png") && !filenameOriginal.includes("jpg")) {
+                    resolve({
+                        type: "warning",
+                        description: 'O arquivo precisa ser do type PNG ou JPG'
+                    });
+                }
+
+                const oldpath = files.picture_imagem[0].filepath;
+                const filename = filenameOriginal.split('.');
+                const newFilename = `${filename[0]}-${Date.now()}.${filename[1]}`;
+                const newpath = path.join(__dirname, '../uploads/pictures', newFilename);
+
+                await copyFileAsync(oldpath, newpath);
+                await unlinkAsync(oldpath);
+
+                await prisma.pictures.create({
+                    data: {
+                        picture_nome: fields.picture_nome[0],
+                        picture_imagem: `${req.protocol}://${req.headers.host}/uploads/pictures/${newFilename}`
+                    }
+                });
+                resolve({
+                    type: "success",
+                    description: 'Registro criado com sucesso!'
+                });
+            });
+
         })
+        return resultado;
     } catch (error) {
         return {
             type: "error",
             description: error.message
-        }
+        };
     }
-    // return await executeSQL(`SELECT * FROM pictures WHERE lead_id = ${id};`);
-
-}
-
-async function criar(dados) {
-    try {
-        return await prisma.pictures.create({
-            data: dados
-        })
-    } catch (error) {
-        return {
-            type: "error",
-            description: error.message
-        }
-    }
-    // return await executeSQL(`INSERT INTO pictures (categoria_nome) VALUES ("${dados.categoria_nome}");`);
-
-}
-
-async function editar(id, dados) {
-    try {
-        return await prisma.pictures.update({
-            data: dados,
-            where: {
-                lead_id: Number(id)
-            }
-        })
-    } catch (error) {
-        return {
-            type: "error",
-            description: error.message
-        }
-    }
-    // return await executeSQL(`UPDATE pictures SET categoria_nome = "${dados.categoria_nome}" WHERE lead_id = ${id};`);
-
-}
-
-async function deletar(id) {
-    try {
-        return await prisma.pictures.delete({
-            where: {
-                lead_id: Number(id)
-            }
-        })
-    } catch (error) {
-        return {
-            type: "error",
-            description: error.message
-        }
-    }
-    // return await executeSQL(`DELETE FROM pictures WHERE lead_id = ${id};`);
-
 }
 
 module.exports = {
     buscarTodos,
-    buscarUm,
-    criar,
-    editar,
-    deletar
+    criar
 }
