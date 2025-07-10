@@ -14,6 +14,7 @@ const bannerRoutes = require("./src/routes/bannerRoutes");
 const produtoRoutes = require("./src/routes/produtoRoutes");
 const picturesRoutes = require("./src/routes/picturesRoutes");
 const { login } = require("./src/controllers/usuarioController");
+const { rotaProtegida } = require("./src/utils");
 
 
 // middleware que permite requisições de outros dominios
@@ -39,7 +40,7 @@ app.use('/uploads/produtos', express.static('./src/uploads/produtos'));
 app.use("/categorias", categoriaRoutes);
 app.use("/leads",leadRoutes);
 app.use("/unidades",unidadeRoutes);
-app.use("/usuarios", usuarioRoutes); 
+app.use("/usuarios", rotaProtegida, usuarioRoutes); 
 app.use("/pictures",picturesRoutes); 
 
 // rota not found

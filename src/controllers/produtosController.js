@@ -142,7 +142,7 @@ async function editar(id, req) {
                     await copyFileAsync(oldPath, newPath);
                     await unlinkAsync(oldPath);
 
-                  imagemUrl =`${req.protocol}://${req.headers.host}/uploads/produtos/${newFilename}`
+                    imagemUrl = `${req.protocol}://${req.headers.host}/uploads/produtos/${newFilename}`
                 }
 
                 const data = {
@@ -155,7 +155,7 @@ async function editar(id, req) {
                 if (imagemUrl) {
                     data.produto_imagem = imagemUrl;
                 }
-             
+
                 await prisma.produtos.update({
                     data,
                     where: {

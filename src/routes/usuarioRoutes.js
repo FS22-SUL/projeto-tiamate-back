@@ -1,6 +1,5 @@
 // Importa as funções do controller de usuários
 const { buscarTodos, buscarUm, criar, editar, deletar } = require("../controllers/usuarioController");
-const { rotaProtegida } = require("../utils");
 
 // Inicializa o roteador do Express
 const router = require("express").Router();
