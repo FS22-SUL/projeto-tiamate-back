@@ -190,8 +190,6 @@ async function deletar(id) {
             description: error.message
         }
     }
-
-
 }
 
 module.exports = {

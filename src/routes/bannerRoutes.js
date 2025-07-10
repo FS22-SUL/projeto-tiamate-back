@@ -11,4 +11,16 @@ router.post("/", rotaProtegida, async(req, res) => {
     res.send(await criar(req));
 });
 
+router.post("/", rotaProtegida, async(req, res) => {
+    res.send(await criar(req));
+});
+
+router.put("/:id", rotaProtegida, async(req, res) => {
+    res.send(await editar(req.params.id, req));
+});
+
+router.delete("/:id", rotaProtegida, async(req, res) => {
+    res.send(await deletar(req.params.id));
+});
+
 module.exports = router;
