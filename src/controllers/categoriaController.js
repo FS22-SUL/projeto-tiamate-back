@@ -53,12 +53,18 @@ async function criar(dados) {
 
 async function editar(id, dados) {
     try {
-        return await prisma.categorias.update({
+        const req = await prisma.categorias.update({
             data: dados,
             where: {
                 categoria_id: Number(id)
             }
         })
+        if(req){
+            return {
+                type: "success",
+                description: "Registro atualizado com sucesso"
+            }
+        }
     } catch (error) {
         return {
             type: "error",
@@ -71,11 +77,17 @@ async function editar(id, dados) {
 
 async function deletar(id) {
     try {
-        return await prisma.categorias.delete({
+        const req = await prisma.categorias.delete({
             where: {
                 categoria_id: Number(id)
             }
         })
+        if(req){
+            return {
+                type: "success",
+                description: "Registro deletado com sucesso"
+            }
+        }
     } catch (error) {
         return {
             type: "error",
