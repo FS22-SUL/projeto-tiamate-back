@@ -104,22 +104,77 @@ async function criar(req) {
     }
 }
 
-async function editar(id, dados) {
+async function editar(id, req) {
     try {
-        return await prisma.produtos.update({
-            data: dados,
-            where: {
-                produto_id: Number(id)
-            }
-        })
+        const form = formidable({});
+
+        const resultado = new Promise((resolve, reject) => {
+            form.parse(req, async (error, fields, files) => {
+                if (error) {
+                    resolve({
+                        type: "error",
+                        description: error.message
+                    });
+                    return;
+                }
+
+                let imagemUrl
+                // Se for trocar a imagem
+                if (files.produto_imagem && files.produto_imagem[0]) {
+                    const file = files.produto_imagem[0];
+                    const filenameOriginal = file.originalFilename.toLocaleLowerCase();
+
+
+                    if (!filenameOriginal.endsWith(".png") && !filenameOriginal.endsWith(".jpg") && !filenameOriginal.endsWith(".jpeg")) {
+                        resolve({
+                            type: "warning",
+                            description: "A imagem deve ser PNG ou JPG/JPEG"
+                        });
+                        return;
+                    }
+
+                    const ext = path.extname(filenameOriginal);
+                    const name = path.basename(filenameOriginal, ext);
+                    const newFilename = `${name}-${Date.now()}${ext}`;
+                    const oldPath = file.filepath;
+                    const newPath = path.join(__dirname, '../uploads/produtos', newFilename);
+
+                    await copyFileAsync(oldPath, newPath);
+                    await unlinkAsync(oldPath);
+
+                  imagemUrl =`${req.protocol}://${req.headers.host}/uploads/produtos/${newFilename}`
+                }
+
+                const data = {
+                    produto_nome: fields.produto_nome[0],
+                    produto_preco: parseFloat(fields.produto_preco[0]),
+                    produto_descricao: fields.produto_descricao[0],
+                    categoria_id: parseInt(fields.categoria_id[0])
+                };
+
+                if (imagemUrl) {
+                    data.produto_imagem = imagemUrl;
+                }
+             
+                await prisma.produtos.update({
+                    data,
+                    where: {
+                        produto_id: Number(id)
+                    }
+                });
+                resolve({
+                    type: "success",
+                    description: 'Produto atualizado com sucesso!'
+                });
+            });
+        });
+        return resultado;
     } catch (error) {
         return {
             type: "error",
             description: error.message
-        }
+        };
     }
-    // return await executeSQL(`UPDATE unidades SET unidade_nome = "${dados.unidade_nome}" WHERE unidade_id = ${id};`);
-
 }
 
 async function deletar(id) {

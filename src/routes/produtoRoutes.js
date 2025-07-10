@@ -1,24 +1,24 @@
 const { buscarTodos, buscarUm, criar, editar, deletar } = require("../controllers/produtosController");
-
+const { rotaProtegida } = require("../utils");
 const router = require("express").Router();
 
 router.get("/", async (req, res) => {
     res.send(await buscarTodos());
 });
 
-router.post("/", async(req, res) => {
-    res.send(await criar(req));
-});
-
 router.get("/:id", async (req, res) => {
     res.send(await buscarUm(req.params.id));
 });
 
-router.put("/:id", async(req, res) => {
-    res.send(await editar(req.params.id, req.body));
+router.post("/",rotaProtegida, async(req, res) => {
+    res.send(await criar(req));
 });
 
-router.delete("/:id", async(req, res) => {
+router.put("/:id",rotaProtegida, async(req, res) => {
+    res.send(await editar(req.params.id, req));
+});
+
+router.delete("/:id",rotaProtegida, async(req, res) => {
     res.send(await deletar(req.params.id));
 });
 
