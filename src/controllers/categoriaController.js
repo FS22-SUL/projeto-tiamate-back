@@ -32,9 +32,15 @@ async function buscarUm(id) {
 
 async function criar(dados) {
     try {
-        return await prisma.categorias.create({
+        const req = await prisma.categorias.create({
             data: dados
         })
+        if(req){
+            return {
+                type: "success",
+                description: "Registro criado com sucesso"
+            }
+        }
     } catch (error) {
         return {
             type: "error",
