@@ -66,7 +66,7 @@ async function criar(req) {
         await prisma.depoimentos.create({
           data: {
             depoimento_nome: fields.depoimento_nome[0],
-            depoimento_nota: fields.depoimento_nota[0],
+            depoimento_nota: Number(fields.depoimento_nota[0]),
             depoimento_descricao: fields.depoimento_descricao[0],
             depoimento_imagem: `${req.protocol}://${req.headers.host}/uploads/depoimentos/${newFilename}`,
           },
@@ -136,7 +136,7 @@ async function editar(id, req) {
 
         const data = {
           depoimento_nome: fields.depoimento_nome[0],
-          depoimento_nota: fields.depoimento_nota[0],
+          depoimento_nota: Number(fields.depoimento_nota[0]),
           depoimento_descricao: fields.depoimento_descricao[0],
           depoimento_imagem: `${req.protocol}://${req.headers.host}/uploads/depoimentos/${newFilename}`,
         };
