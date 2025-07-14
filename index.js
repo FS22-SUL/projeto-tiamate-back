@@ -13,6 +13,7 @@ const usuarioRoutes = require("./src/routes/usuarioRoutes");
 const bannerRoutes = require("./src/routes/bannerRoutes");
 const produtoRoutes = require("./src/routes/produtoRoutes");
 const picturesRoutes = require("./src/routes/picturesRoutes");
+const depoimentosRoutes = require("./src/routes/depoimentosRoutes")
 const { login } = require("./src/controllers/usuarioController");
 const { rotaProtegida } = require("./src/utils");
 
@@ -42,6 +43,7 @@ app.use("/leads",leadRoutes);
 app.use("/unidades",unidadeRoutes);
 app.use("/usuarios", rotaProtegida, usuarioRoutes); 
 app.use("/pictures",picturesRoutes); 
+app.use("/depoimentos",depoimentosRoutes); 
 
 // rota not found
 app.use((req, res) => {
