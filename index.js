@@ -38,7 +38,7 @@ app.use("/banners", bannerRoutes);
 app.use("/produtos", produtoRoutes);
 app.use('/uploads/banners', express.static('./src/uploads/banners'));
 app.use('/uploads/produtos', express.static('./src/uploads/produtos'));
-app.use('/uploads/depoimentos', express.static('./src/uploads/produtos'));
+app.use('/uploads/depoimentos', express.static('./src/uploads/depoimentos'));
 app.use("/categorias", categoriaRoutes);
 app.use("/leads",leadRoutes);
 app.use("/unidades",unidadeRoutes);
