@@ -179,11 +179,18 @@ async function editar(id, req) {
 
 async function deletar(id) {
     try {
-        return await prisma.produtos.delete({
+        const req = await prisma.produtos.delete({
             where: {
                 produto_id: Number(id)
             }
         })
+
+        if (req) {
+            return {
+                type: "success",
+                description: "Registro deletado com sucesso",
+            };
+        }
     } catch (error) {
         return {
             type: "error",

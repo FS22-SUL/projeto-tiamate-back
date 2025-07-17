@@ -136,9 +136,9 @@ async function editar(id, req) {
 
                 const data = {
                     noticia_titulo: fields.noticia_titulo[0],
-                        noticia_link: fields.noticia_link[0],
-                        noticia_descricao: fields.noticia_descricao[0],
-                        noticia_imagem: `${req.protocol}://${req.headers.host}/uploads/noticias/${newFilename}`,
+                    noticia_link: fields.noticia_link[0],
+                    noticia_descricao: fields.noticia_descricao[0],
+                    noticia_imagem: imagemUrl,
                 };
 
                 if (imagemUrl) {

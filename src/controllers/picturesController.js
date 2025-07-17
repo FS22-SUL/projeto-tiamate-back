@@ -162,11 +162,17 @@ async function editar(id, req) {
 
 async function deletar(id) {
     try {
-        return await prisma.pictures.delete({
+        const request = await prisma.pictures.delete({
             where: {
                 picture_id: Number(id)
             }
         })
+        if (request) {
+            return {
+                type: "success",
+                description: 'Registro deletado com sucesso!'
+            }
+        }
     } catch (error) {
         return {
             type: "error",
