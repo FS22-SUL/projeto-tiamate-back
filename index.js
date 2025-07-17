@@ -14,6 +14,7 @@ const bannerRoutes = require("./src/routes/bannerRoutes");
 const produtoRoutes = require("./src/routes/produtoRoutes");
 const picturesRoutes = require("./src/routes/picturesRoutes");
 const depoimentosRoutes = require("./src/routes/depoimentosRoutes")
+const noticiasRoutes = require("./src/routes/noticiasRoutes");
 const { login } = require("./src/controllers/usuarioController");
 const { rotaProtegida } = require("./src/utils");
 
@@ -45,6 +46,8 @@ app.use("/usuarios", rotaProtegida, usuarioRoutes);
 app.use("/pictures",picturesRoutes); 
 app.use("/depoimentos",depoimentosRoutes); 
 app.use('/uploads/depoimentos', express.static('./src/uploads/depoimentos'));
+app.use("/noticias",noticiasRoutes); 
+app.use('/uploads/noticias', express.static('./src/uploads/noticias'));
 
 // rota not found
 app.use((req, res) => {
