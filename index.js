@@ -35,15 +35,16 @@ app.post("/login", async (req, res) => {
 
 // rotas das entidades
 
-app.use("/banners", bannerRoutes);
-app.use('/uploads/banners', express.static('./src/uploads/banners'));
-app.use("/produtos", produtoRoutes);
-app.use('/uploads/produtos', express.static('./src/uploads/produtos'));
 app.use("/categorias", categoriaRoutes);
 app.use("/leads",leadRoutes);
 app.use("/unidades",unidadeRoutes);
 app.use("/usuarios", rotaProtegida, usuarioRoutes); 
+app.use("/banners", bannerRoutes);
+app.use('/uploads/banners', express.static('./src/uploads/banners'));
+app.use("/produtos", produtoRoutes);
+app.use('/uploads/produtos', express.static('./src/uploads/produtos'));
 app.use("/pictures",picturesRoutes); 
+app.use('/uploads/pictures', express.static('./src/uploads/pictures'));
 app.use("/depoimentos",depoimentosRoutes); 
 app.use('/uploads/depoimentos', express.static('./src/uploads/depoimentos'));
 app.use("/noticias",noticiasRoutes); 

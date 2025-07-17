@@ -136,12 +136,8 @@ async function editar(id, req) {
 
                 const data = {
                     picture_nome: fields.picture_nome[0],
-                    picture_imagem: `${req.protocol}://${req.headers.host}/uploads/pictures/${newFilename}`
+                    picture_imagem: imagemUrl
                 };
-
-                if (imagemUrl) {
-                    data.picture_imagem = imagemUrl;
-                }
 
                 await prisma.pictures.update({
                     data,
