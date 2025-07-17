@@ -11,7 +11,7 @@ router.get("/:id", async (req, res) => {
     res.send(await buscarUm(req.params.id));
 });
 
-router.post("/", rotaProtegida, async(req, res) => {
+router.post("/", async(req, res) => {
     res.send(await criar(req.body));
 });
 
