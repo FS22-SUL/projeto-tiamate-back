@@ -108,9 +108,8 @@ async function editar(id, req) {
                         return;
                     }
 
-                    const ext = path.extname(filenameOriginal);
-                    const name = path.basename(filenameOriginal, ext);
-                    const newFilename = `${name}-${Date.now()}${ext}`;
+                    const filename = filenameOriginal.split('.');
+                    const newFilename = `${filename[0]}-${Date.now()}.${filename[1]}`;
                     const oldPath = file.filepath;
                     const newPath = path.join(__dirname, '../uploads/banners', newFilename);
 
@@ -123,12 +122,8 @@ async function editar(id, req) {
                 const data = {
                     banner_nome: fields.banner_nome[0],
                     banner_link: fields.banner_link[0],
-                    banner_imagem: `${req.protocol}://${req.headers.host}/uploads/banners/${newFilename}`
+                    banner_imagem: imagemUrl
                 };
-
-                if (imagemUrl) {
-                    data.banner_imagem = imagemUrl;
-                }
 
                 await prisma.banners.update({
                     data,
