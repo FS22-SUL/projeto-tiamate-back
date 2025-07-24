@@ -1,5 +1,6 @@
 const { buscarTodos, buscarUm, criar, editar, deletar } = require("../controllers/produtosController");
 const { rotaProtegida } = require("../utils");
+
 const router = require("express").Router();
 
 router.get("/", async (req, res) => {

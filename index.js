@@ -5,6 +5,9 @@ const cors = require("cors");
 const app = express();
 const port = 8000;
 
+const swaggerUI = require('swagger-ui-express');
+const swaggerFile = require('./documentacao.json');
+
 // imports de rotas
 const categoriaRoutes = require("./src/routes/categoriaRoutes");
 const leadRoutes = require("./src/routes/leadRoutes");
@@ -18,6 +21,7 @@ const noticiasRoutes = require("./src/routes/noticiasRoutes");
 const { login,criar } = require("./src/controllers/usuarioController");
 const { rotaProtegida } = require("./src/utils");
 const contatoRoutes = require("./src/routes/contatoRoutes");
+const path = require("path");
 
 
 // middleware que permite requisições de outros dominios
@@ -26,11 +30,43 @@ app.use(cors());
 app.use(express.json());
 
 // rota raiz
+// app.get("/", (req, res) => {
+//     res.send("Hello World!");
+// });
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerFile));
+
 app.get("/", (req, res) => {
-    res.send("Hello World!");
+    res.redirect("/docs");
 });
 
+
+
 app.post("/login", async (req, res) => {
+    // #swagger.tags = ['Usuarios']
+	// #swagger.description = 'Autentica um usuário'
+	/*  #swagger.parameters['obj'] = {
+                in: 'body',
+                schema: {
+                    $usuario_email: 'usuario@email.com',
+                    $usuario_senha: '123456'
+                }
+        } */
+	/* #swagger.responses[200] = {
+            description: 'Login efetuado',
+            schema: {
+                usuario_nome: 'chico moedas',
+                usuario_email: 'chico@gmail.com',
+                token: '...'
+            }
+    } */
+	/* #swagger.responses[422] = {
+            description: 'Erro interno',
+            schema: {
+                status: 422,
+                detail: 'mensagem do sistema',
+                severity: 'danger'
+            }
+    } */
     res.send(await login(req.body));
 })
 

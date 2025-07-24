@@ -1,8 +1,7 @@
-const { executeSQL, prisma } = require("../utils");
+const { prisma } = require("../utils");
 
 async function buscarTodos() {
     try {
-        // return await executeSQL("SELECT * FROM leads;");
         return await prisma.leads.findMany();
     } catch (error) {
         return {
@@ -10,7 +9,6 @@ async function buscarTodos() {
             description: error.message
         }
     }
-
 }
 
 async function buscarUm(id) {

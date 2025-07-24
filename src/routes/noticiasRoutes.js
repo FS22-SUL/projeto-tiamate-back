@@ -8,7 +8,7 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-    res.send(await buscarUm());
+    res.send(await buscarUm(req.params.id));
 });
 
 router.post("/", rotaProtegida, async(req, res) => {

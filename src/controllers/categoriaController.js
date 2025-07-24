@@ -1,4 +1,4 @@
-const { executeSQL, prisma } = require("../utils");
+const { prisma } = require("../utils");
 
 async function buscarTodos() {
     try {
@@ -9,8 +9,6 @@ async function buscarTodos() {
             description: error.message
         }
     }
-    //     return await executeSQL("SELECT * FROM categorias;");
-
 }
 
 async function buscarUm(id) {
