@@ -5,6 +5,7 @@ const path = require("path");
 const fs = require("fs");
 const copyFileAsync = promisify(fs.copyFile);
 const unlinkAsync = promisify(fs.unlink);
+const cloudinary = require('../utils/cloudinary');
 
 
 async function buscarTodos() {
@@ -48,8 +49,9 @@ async function criar(req) {
                         description: error.message
                     });
                 }
-
-
+                console.log("Files: ",files);
+                console.log("Files.produto_imagem: ",files.produto_imagem);
+                console.log(fields);
 
                 if (!files.produto_imagem || !files.produto_imagem[0]) {
                     resolve({
@@ -74,17 +76,20 @@ async function criar(req) {
                 const newFilename = `${filename[0]}-${Date.now()}.${filename[1]}`;
                 const newpath = path.join(__dirname, '../uploads/produtos', newFilename);
 
+
+
                 await copyFileAsync(oldpath, newpath);
                 await unlinkAsync(oldpath);
-
-
-
+                const resultadoImagem = await cloudinary.uploader.upload(newpath);
+                console.log("Imagem salva em: ", resultadoImagem.secure_url);
+                
+            
                 await prisma.produtos.create({
                     data: {
                         produto_nome: fields.produto_nome[0],
                         produto_preco: parseFloat(fields.produto_preco[0]),
                         produto_descricao: fields.produto_descricao[0],
-                        produto_imagem: `${req.protocol}://${req.headers.host}/uploads/produtos/${newFilename}`,
+                        produto_imagem: `${resultadoImagem.secure_url}`,
                         categoria_id: parseInt(fields.categoria_id[0])
                     }
                 });
@@ -141,8 +146,10 @@ async function editar(id, req) {
 
                     await copyFileAsync(oldPath, newPath);
                     await unlinkAsync(oldPath);
+                    imagemUrl = await cloudinary.uploader.upload(newPath);
+                    console.log("Imagem salva em: ", imagemUrl.secure_url);
 
-                    imagemUrl = `${req.protocol}://${req.headers.host}/uploads/produtos/${newFilename}`
+                     
                 }
 
                 const data = {
@@ -153,7 +160,7 @@ async function editar(id, req) {
                 };
 
                 if (imagemUrl) {
-                    data.produto_imagem = imagemUrl;
+                    data.produto_imagem = imagemUrl.secure_url;
                 }
 
                 await prisma.produtos.update({

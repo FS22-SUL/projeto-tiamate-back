@@ -15,7 +15,7 @@ const produtoRoutes = require("./src/routes/produtoRoutes");
 const picturesRoutes = require("./src/routes/picturesRoutes");
 const depoimentosRoutes = require("./src/routes/depoimentosRoutes")
 const noticiasRoutes = require("./src/routes/noticiasRoutes");
-const { login } = require("./src/controllers/usuarioController");
+const { login,criar } = require("./src/controllers/usuarioController");
 const { rotaProtegida } = require("./src/utils");
 const contatoRoutes = require("./src/routes/contatoRoutes");
 
