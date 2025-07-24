@@ -17,6 +17,7 @@ const depoimentosRoutes = require("./src/routes/depoimentosRoutes")
 const noticiasRoutes = require("./src/routes/noticiasRoutes");
 const { login,criar } = require("./src/controllers/usuarioController");
 const { rotaProtegida } = require("./src/utils");
+const contatoRoutes = require("./src/routes/contatoRoutes");
 
 
 // middleware que permite requisições de outros dominios
@@ -35,6 +36,11 @@ app.post("/login", async (req, res) => {
 
 // rotas das entidades
 
+app.use("/banners", bannerRoutes);
+app.use("/produtos", produtoRoutes);
+app.use('/uploads/banners', express.static('./src/uploads/banners'));
+app.use('/uploads/produtos', express.static('./src/uploads/produtos'));
+app.use('/uploads/depoimentos', express.static('./src/uploads/depoimentos'));
 app.use("/categorias", categoriaRoutes);
 app.use("/leads",leadRoutes);
 app.use("/unidades",unidadeRoutes);
@@ -49,6 +55,7 @@ app.use("/depoimentos",depoimentosRoutes);
 app.use('/uploads/depoimentos', express.static('./src/uploads/depoimentos'));
 app.use("/noticias",noticiasRoutes); 
 app.use('/uploads/noticias', express.static('./src/uploads/noticias'));
+app.use("/api", contatoRoutes);
 
 // rota not found
 app.use((req, res) => {
