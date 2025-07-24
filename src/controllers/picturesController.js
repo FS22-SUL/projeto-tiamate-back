@@ -136,12 +136,8 @@ async function editar(id, req) {
 
                 const data = {
                     picture_nome: fields.picture_nome[0],
-                    picture_imagem: `${req.protocol}://${req.headers.host}/uploads/pictures/${newFilename}`
+                    picture_imagem: imagemUrl
                 };
-
-                if (imagemUrl) {
-                    data.picture_imagem = imagemUrl;
-                }
 
                 await prisma.pictures.update({
                     data,
@@ -166,11 +162,17 @@ async function editar(id, req) {
 
 async function deletar(id) {
     try {
-        return await prisma.pictures.delete({
+        const request = await prisma.pictures.delete({
             where: {
                 picture_id: Number(id)
             }
         })
+        if (request) {
+            return {
+                type: "success",
+                description: 'Registro deletado com sucesso!'
+            }
+        }
     } catch (error) {
         return {
             type: "error",
