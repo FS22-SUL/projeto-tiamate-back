@@ -29,17 +29,11 @@ app.use(cors());
 // middleware que traduz o json pra javascript
 app.use(express.json());
 
-// rota raiz
-// app.get("/", (req, res) => {
-//     res.send("Hello World!");
-// });
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerFile));
 
 app.get("/", (req, res) => {
     res.redirect("/docs");
 });
-
-
 
 app.post("/login", async (req, res) => {
     // #swagger.tags = ['Usuarios']

@@ -23,7 +23,7 @@ function rotaProtegida(req, res, next) {
         const token = req.headers.authorization.split(" ")[1];
         jwt.verify(token, process.env.SEGREDO, (error) => {
             if (error) {
-                res.status(401).send({
+                res.status(401).json({
                     type: "warning",
                     description: "token inválido"
                 })
@@ -31,7 +31,10 @@ function rotaProtegida(req, res, next) {
             next();
         });
     } else {
-        res.status(403).send("Não autorizado");
+        res.status(403).json({
+            type: "warning",
+            description: "Não autorizado"
+        })
     }
 }
 

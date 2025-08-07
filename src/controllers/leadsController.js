@@ -30,9 +30,15 @@ async function buscarUm(id) {
 
 async function criar(dados) {
     try {
-        return await prisma.leads.create({
+        let req = await prisma.leads.create({
             data: dados
         })
+        if (req) {
+            return {
+                type: "success",
+                description: "Registro criado com sucesso"
+            }
+        }
     } catch (error) {
         return {
             type: "error",
@@ -45,12 +51,18 @@ async function criar(dados) {
 
 async function editar(id, dados) {
     try {
-        return await prisma.leads.update({
+        let req = await prisma.leads.update({
             data: dados,
             where: {
                 lead_id: Number(id)
             }
         })
+        if (req) {
+            return {
+                type: "success",
+                description: "Registro atualizado com sucesso"
+            }
+        }
     } catch (error) {
         return {
             type: "error",
@@ -63,11 +75,17 @@ async function editar(id, dados) {
 
 async function deletar(id) {
     try {
-        return await prisma.leads.delete({
+        let req = await prisma.leads.delete({
             where: {
                 lead_id: Number(id)
             }
         })
+        if (req) {
+            return {
+                type: "success",
+                description: "Registro deletado com sucesso"
+            }
+        }
     } catch (error) {
         return {
             type: "error",

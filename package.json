@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx nodemon index.js",
-    "doc": "npx run swagger"
+    "doc": "npx run swagger",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -18,13 +18,16 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "formidable": "^3.5.4",
+    "jest": "^30.0.5",
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.2",
     "mysql2": "^3.14.0",
+    "node-mocks-http": "^1.17.2",
     "nodemailer": "^7.0.5",
     "nodemon": "^3.1.10",
     "path": "^0.12.7",
     "prisma": "^6.9.0",
+    "supertest": "^7.1.4",
     "swagger-autogen": "^2.23.7",
     "swagger-ui-express": "^5.0.1"
   }
